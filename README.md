@@ -12,11 +12,13 @@ ouselves and the data we should be concerned with.
 
 ### Concepts
 
-The primary elements of a Jot graph are based on two node types: Entity and Jot. 
+The elements of a Jot graph are based on two primary node types, Jot and Entity, and the relationships between them. As a 
+general rule, relationships only exist between Jots and Entities. This helps to reduce complexity and enforce consistent
+data modelling practices.
 
 #### Entity
 
-An Entity represents a subject with which our data can form a relationship. This could be a person, project, property, or any 
+An Entity represents a subject with which a Jot can form a relationship. This could be a person, project, property, or any 
 "thing" that might be the subject of information capture.
 
 | Entity       | Description                                                                  |
