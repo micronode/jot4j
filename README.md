@@ -1,6 +1,7 @@
 # Jot - a graph-based data capture platform
 
 [Knowledge Management]: https://en.wikipedia.org/wiki/Knowledge_management
+[Fluent interface]: https://en.wikipedia.org/wiki/Fluent_interface
 
 [Introduction]: #introduction
 
@@ -71,6 +72,25 @@ With just two more relationships with a `User` and `Status` entity we now have t
 | Asset      | owned by     | Organization |
 | Task       | part of      | Project      |
 | Meeting    | status of    | Status       |
+
+## Jot Flow
+
+The Jot API is designed to imitate the natural flow of information as processed by the human brain. Jot provides a [Fluent interface] that hides the underlying implementation in order to focus on the capture of the information itself.
+
+Some of the key principles of the Jot Flow design include:
+
+* Provide an API designed primarily for information capture. Retrieval and deletion are a lesser priority;
+* No distinction between create and update. If record doesn't exist it is created, otherwise it is updated. This includes relationships;
+* All records are identifiable by a string, so adding relationships doesn't require special types or data lookup.
+
+### Examples
+
+The following examples demonstrate how Jot Flow imitates natural language for capturing information:
+
+| Description | Jot Flow |
+|-------------|----------|
+| A text note labeled with "ideas", authored by "Joe Bloggs" | textNote("Example Note").labeledWith("ideas").authoredBy("Joe Bloggs") |
+| An invoice with attachment "invoice.pdf", labeled with "Bills" | invoice("Invoice 1").withAttachment("invoice.pdf).labeledWith("Bills") |
 
 
 ===========
