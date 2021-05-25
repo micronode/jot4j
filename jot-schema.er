@@ -1,0 +1,53 @@
+[organizer]
+    *id {label:"VARCHAR(80)"}
+    name {label:"VARCHAR(80)"}
+
+[calendar]
+    *id {label:"VARCHAR(80)"}
+    name {label:"VARCHAR(80)"}
+    description {label:"VARCHAR(80)"}
+    color {label:"VARCHAR(80)"}
+    image {label:"VARCHAR(80)"}
+    url {label:"VARCHAR(80)"}
+    refresh-interval {label:"VARCHAR(80)"}
+    source {label:"VARCHAR(80)"}
+    categories {label:"VARCHAR(80)"}
+    timezone {label:"VARCHAR(80)"}
+
+[journal_entry]
+    *id {label:"VARCHAR(80)"}
+    organizer_id {label:"VARCHAR(80)"}
+
+[journal_revision]
+    *sequenceno {label:"VARCHAR(80)"}
+    *recurrenceid {label:"VARCHAR(80)"}
+    summary {label:"VARCHAR(80)"}
+    description {label:"VARCHAR(1024)"}
+    status {label:"INTEGER"}
+    classification {label:"VARCHAR(80)"}
+    categories {label:"VARCHAR(80)"}
+
+[journal_attachment]
+    *id {label:"VARCHAR(80)"}
+    name {label:"VARCHAR(80)"}
+
+[journal_comment]
+    *id {label:"VARCHAR(80)"}
+    name {label:"VARCHAR(80)"}
+
+[journal_contact]
+    *id {label:"VARCHAR(80)"}
+    name {label:"VARCHAR(80)"}
+
+[journal_related]
+    *id {label:"VARCHAR(80)"}
+    name {label:"VARCHAR(80)"}
+
+organizer 1--+ journal_entry
+organizer 1--* calendar
+calendar ?--* journal_entry
+journal_entry 1--+ journal_revision
+journal_revision 1--* journal_attachment
+journal_revision 1--* journal_comment
+journal_revision 1--* journal_contact
+journal_revision 1--* journal_related
