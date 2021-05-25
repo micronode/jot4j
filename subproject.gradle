@@ -1,0 +1,166 @@
+apply plugin: 'com.jfrog.bintray'
+apply plugin: 'maven'
+apply plugin: 'maven-publish'
+apply plugin: 'java'
+apply plugin: 'java-library'
+apply plugin: 'jacoco'
+apply plugin: 'signing'
+
+sourceCompatibility = 1.8
+targetCompatibility = 1.8
+
+repositories {
+    mavenCentral()
+}
+
+group = 'org.mnode.jot'
+version = rootProject.scmVersion.version
+description = '''
+A graph-based data management framework
+'''
+
+jacocoTestReport {
+    reports {
+        xml.enabled true
+        html.enabled false
+    }
+}
+
+javadoc {
+    if (JavaVersion.current().isJava8Compatible()) {
+        options.addStringOption('Xdoclint:none', '-quiet')
+    }
+}
+
+task javadocJar(type: Jar, dependsOn: javadoc) {
+    archiveClassifier = 'javadoc'
+    from 'build/docs/javadoc'
+}
+
+task sourcesJar(type: Jar) {
+    from sourceSets.main.allSource
+    archiveClassifier = 'sources'
+}
+artifacts {
+    archives jar
+    archives javadocJar
+    archives sourcesJar
+}
+
+ext {
+    isReleaseVersion = !version.endsWith("SNAPSHOT")
+
+    // sonatype credentials
+    sonatype_username = project.hasProperty('sonatype_username') ? project.getProperty('sonatype_username') : ''
+    sonatype_password = project.hasProperty('sonatype_password') ? project.getProperty('sonatype_password') : ''
+
+    // bintray credentials
+    bintray_user = project.hasProperty('bintray_user') ? project.getProperty('bintray_user') : ''
+    bintray_key = project.hasProperty('bintray_key') ? project.getProperty('bintray_key') : ''
+}
+
+uploadArchives {
+    repositories {
+        mavenDeployer {
+            beforeDeployment { MavenDeployment deployment -> signing.signPom(deployment) }
+
+            repository(url: "https://oss.sonatype.org/service/local/staging/deploy/maven2/") {
+                authentication(userName: sonatype_username, password: sonatype_password)
+            }
+            snapshotRepository(url: "https://oss.sonatype.org/content/repositories/snapshots") {
+                authentication(userName: sonatype_username, password: sonatype_password)
+            }
+
+            pom.project {
+                name 'Jot'
+                packaging 'jar'
+                description description
+                url 'https://mnode.org/jot'
+
+                scm {
+                    url 'https://github.com/micronode/jot'
+                    connection 'scm:git@github.com:micronode/jot.git'
+                    developerConnection 'scm:git@github.com:micronode/jot.git'
+                }
+
+                licenses {
+                    license {
+                        name 'Jot - License'
+                        url 'https://raw.githubusercontent.com/micronode/jot/master/LICENSE'
+                        distribution 'repo'
+                    }
+                }
+
+                developers {
+                    developer {
+                        id 'fortuna'
+                        name 'Ben Fortuna'
+                    }
+                }
+            }
+        }
+    }
+}
+publishing {
+    publications {
+        mavenArtifacts(MavenPublication) {
+            from components.java
+            artifact javadocJar
+            artifact sourcesJar
+            pom.withXml {
+                asNode().appendNode('name', name)
+                asNode().appendNode('description', description)
+                asNode().appendNode('url', 'http://mnode.org/jot')
+
+                def scmNode = asNode().appendNode('scm')
+                scmNode.appendNode('url', 'https://github.com/micronode/jot')
+                scmNode.appendNode('connection', 'scm:git@github.com:micronode/jot.git')
+                scmNode.appendNode('developerConnection', 'scm:git@github.com:micronode/jot.git')
+
+                def licenseNode = asNode().appendNode('licenses').appendNode('license')
+                licenseNode.appendNode('name', 'Jot - License')
+                licenseNode.appendNode('url', 'https://raw.githubusercontent.com/micronode/jot/master/LICENSE')
+                licenseNode.appendNode('distribution', 'repo')
+
+                def developerNode = asNode().appendNode('developers').appendNode('developer')
+                developerNode.appendNode('id', 'fortuna')
+                developerNode.appendNode('name', 'Ben Fortuna')
+            }
+        }
+    }
+}
+
+signing {
+    required { isReleaseVersion && gradle.taskGraph.hasTask("uploadArchives") }
+    //sign configurations.archives
+    sign publishing.publications.mavenArtifacts
+}
+
+bintray {
+    user = bintray_user
+    key = bintray_key
+    pkg {
+        repo = 'jot'
+        name = name
+        userOrg = 'micronode'
+        licenses = ['BSD']
+        vcsUrl = 'https://github.com/micronode/jot.git'
+        version {
+            name = scmVersion.version
+            desc = "Jot $scmVersion.version"
+            released  = new Date()
+            vcsTag = "jot-$scmVersion.version"
+            gpg {
+                sign = isReleaseVersion
+            }
+            mavenCentralSync {
+                sync = false//isReleaseVersion
+                user = sonatype_username //OSS user token: mandatory
+                password = sonatype_password //OSS user password: mandatory
+//                    close = '0' //Optional property. By default the staging repository is closed and artifacts are released to Maven Central. You can optionally turn this behaviour off (by puting 0 as value) and release the version manually.
+            }
+        }
+    }
+//    configurations = ['archives']
+    publications = ['mavenArtifacts']
+}

@@ -1,0 +1,42 @@
+plugins {
+//    id 'java'
+    id 'pl.allegro.tech.build.axion-release' version '1.8.1'
+    id "com.jfrog.bintray" version "1.7.3" apply false
+    id 'com.github.lburgazzoli.karaf' version '0.0.49' apply false
+}
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+//    compile 'com.graphql-java:graphql-java:14.0'
+}
+
+scmVersion {
+    tag {
+        prefix = 'jot'
+    }
+    versionCreator 'versionWithBranch'
+    branchVersionCreator = [
+            'master': 'simple'
+    ]
+}
+
+group = 'micronode'
+version = scmVersion.version
+description = '''
+A GraphQL-based data API
+'''
+
+//def schemaproject = subprojects.find { it.name == 'jot-schema' }
+//
+//configure(schemaproject) { subproject ->
+//    apply from: "$rootDir/schema.gradle"
+//}
+//
+//def bundleprojects = subprojects.findAll { it.name != 'jot-schema' }
+
+subprojects { subproject ->
+    apply from: "$rootDir/subproject.gradle"
+}
