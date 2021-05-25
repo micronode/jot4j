@@ -1,0 +1,6 @@
+get_all_jots:
+  function: functions/GetAllJots.sql
+
+get_textnote:
+  function: functions/GetTextNote.sql
+  args: ['id']

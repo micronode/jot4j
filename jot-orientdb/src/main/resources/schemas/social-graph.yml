@@ -1,0 +1,24 @@
+---
+name: Entity
+superclasses: [ V ]
+abstract: true
+properties:
+  - name: name
+    mandatory: true
+
+---
+name: Organization
+superclasses: [ Entity ]
+
+---
+name: Person
+superclasses: [ Entity ]
+properties:
+  - name: email
+
+---
+name: Project
+superclasses: [ Entity ]
+linkProperties:
+  - name: parent
+    schemaClass: Entity

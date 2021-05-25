@@ -1,0 +1,38 @@
+---
+name: Attachment
+superclasses: [ V ]
+properties:
+  - name: url
+
+---
+name: Definition
+superclasses: [ V ]
+properties:
+  - name: name
+    mandatory: true
+  - name: description
+
+---
+name: Label
+superclasses: [ V ]
+properties:
+  - name: colour
+
+---
+name: Term
+superclasses: [ V ]
+properties:
+  - name: name
+    mandatory: true
+
+---
+name: User
+superclasses: [ V ]
+
+---
+name: AuthoredBy
+superclasses: [ E ]
+
+---
+name: TaggedWith
+superclasses: [ E ]

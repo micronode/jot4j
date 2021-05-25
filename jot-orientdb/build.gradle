@@ -1,0 +1,17 @@
+plugins {
+    id 'groovy'
+}
+
+ext {
+    orientDBVersion = '3.0.23'
+}
+
+dependencies {
+    api project(':jot-core')
+
+    implementation "com.orientechnologies:orientdb-core:$orientDBVersion",
+            "com.orientechnologies:orientdb-graphdb:$orientDBVersion",
+            "com.orientechnologies:orientdb-gremlin:$orientDBVersion"
+
+    testImplementation 'org.spockframework:spock-core:1.3-groovy-2.5'
+}

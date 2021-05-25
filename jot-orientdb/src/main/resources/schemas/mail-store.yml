@@ -1,0 +1,70 @@
+---
+name: Entity
+superclasses: [ V ]
+abstract: true
+properties:
+  - name: name
+    mandatory: true
+
+---
+name: Attachment
+superclasses: [ V ]
+properties:
+  - name: url
+
+---
+name: Label
+superclasses: [ V ]
+properties:
+  - name: name
+    mandatory: true
+  - name: colour
+
+---
+name: Folder
+superclasses: [ Label ]
+linkProperties:
+  - name: parent
+    schemaClass: Folder
+  - name: children
+    schemaClass: Folder
+    type: LINKSET
+
+---
+name: Flag
+superclasses: [ Label ]
+
+---
+name: Message
+superclasses: [ V ]
+properties:
+  - name: subject
+  - name: body
+linkProperties:
+  - name: sender
+    schemaClass: Entity
+  - name: attachments
+    schemaClass: Attachment
+    type: LINKSET
+
+---
+name: Organization
+superclasses: [ Entity ]
+
+---
+name: Person
+superclasses: [ Entity ]
+properties:
+  - name: email
+
+---
+name: User
+superclasses: [ V ]
+
+---
+name: AuthoredBy
+superclasses: [ E ]
+
+---
+name: TaggedWith
+superclasses: [ E ]

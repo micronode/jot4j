@@ -1,0 +1,15 @@
+schema {
+    query: Jot
+}
+
+interface Auditable {
+    createdAt: String
+    updatedAt: String
+}
+
+type Jot implements Auditable {
+    id: ID!
+    summary: String
+    createdAt: String
+    updatedAt: String
+}

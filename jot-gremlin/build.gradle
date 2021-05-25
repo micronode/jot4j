@@ -1,0 +1,17 @@
+plugins {
+    id 'java'
+}
+
+ext {
+    orientDBVersion = '3.0.23'
+}
+
+dependencies {
+    api project(':jot-core')
+
+    implementation "com.orientechnologies:orientdb-core:$orientDBVersion",
+            "com.orientechnologies:orientdb-graphdb:$orientDBVersion",
+            "com.orientechnologies:orientdb-gremlin:$orientDBVersion",
+            'org.yaml:snakeyaml:1.25',
+            'org.apache.tinkerpop:tinkergraph-gremlin:3.4.3'
+}

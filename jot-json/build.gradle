@@ -1,0 +1,11 @@
+plugins {
+    id 'groovy'
+}
+
+dependencies {
+    api project(':jot-core')
+
+    implementation 'com.jillesvangurp:jsonj:2.52'
+
+    testImplementation 'org.spockframework:spock-core:1.3-groovy-2.5'
+}

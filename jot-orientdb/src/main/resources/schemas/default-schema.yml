@@ -1,0 +1,187 @@
+---
+name: Entity
+superclasses: [ V ]
+abstract: true
+properties:
+  - name: name
+    mandatory: true
+
+---
+name: Jot
+superclasses: [ V ]
+abstract: true
+properties:
+  - name: summary
+    mandatory: true
+  - name: createdAt
+    type: DATETIME
+    mandatory: true
+  - name: updatedAt
+    type: DATETIME
+    mandatory: true
+
+---
+name: AssetType
+superclasses: [ Entity ]
+
+---
+name: Asset
+superclasses: [ Entity ]
+linkProperties:
+  - name: assetType
+    schemaClass: AssetType
+
+---
+name: Attachment
+superclasses: [ Jot ]
+properties:
+  - name: url
+
+---
+name: Event
+superclasses: [ Jot ]
+properties:
+  - name: startTime
+    type: DATETIME
+  - name: endTime
+    type: DATETIME
+linkProperties:
+  - name: attachments
+    schemaClass: Attachment
+    type: LINKSET
+
+---
+name: Invoice
+superclasses: [ Jot ]
+properties:
+  - name: paymentDueDate
+    type: DATETIME
+  - name: paymentStatus
+    type: STRING
+linkProperties:
+  - name: attachments
+    schemaClass: Attachment
+    type: LINKSET
+
+---
+name: Label
+superclasses: [ Entity ]
+properties:
+  - name: colour
+
+---
+name: Folder
+superclasses: [ Label ]
+linkProperties:
+  - name: parent
+    schemaClass: Folder
+  - name: children
+    schemaClass: Folder
+    type: LINKSET
+
+---
+name: Minutes
+superclasses: [ Jot ]
+linkProperties:
+  - name: meeting
+    schemaClass: Event
+  - name: actions
+    schemaClass: Task
+    type: LINKSET
+
+---
+name: Organization
+superclasses: [ Entity ]
+
+---
+name: Person
+superclasses: [ Entity ]
+properties:
+  - name: email
+
+---
+name: Place
+superclasses: [ Entity ]
+properties:
+  - name: longitude
+    type: FLOAT
+  - name: latitude
+    type: FLOAT
+
+---
+name: Poll
+superclasses: [ Jot ]
+linkProperties:
+  - name: options
+    schemaClass: Jot
+    type: LINKSET
+
+---
+name: Project
+superclasses: [ Entity ]
+linkProperties:
+  - name: parent
+    schemaClass: Entity
+
+---
+name: Recipe
+superclasses: [ Jot ]
+properties:
+  - name: ingredients
+    type: EMBEDDEDLIST
+  - name: instructions
+    type: EMBEDDEDLIST
+
+---
+name: Status
+superclasses: [ Entity ]
+properties:
+  - name: displayName
+
+---
+name: Task
+superclasses: [ Jot ]
+properties:
+  - name: dueDate
+    type: DATETIME
+
+---
+name: TextNote
+superclasses: [ Jot ]
+properties:
+  - name: note
+
+---
+name: User
+superclasses: [ Entity ]
+
+---
+name: AuthoredBy
+superclasses: [ E ]
+properties:
+  - name: lastUpdate
+    type: DATETIME
+
+---
+name: OwnedBy
+superclasses: [ E ]
+
+---
+name: Attendee
+superclasses: [ E ]
+
+---
+name: Organizer
+superclasses: [ E ]
+
+---
+name: TaggedWith
+superclasses: [ E ]
+
+---
+name: AssignedTo
+superclasses: [ E ]
+
+---
+name: Contains
+superclasses: [ E ]
