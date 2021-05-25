@@ -1,0 +1,12 @@
+[person]
+    *id {label:"INTEGER"}
+    name {label:"VARCHAR(80)"}
+    emailAddress {label:"VARCHAR(80)"}
+
+[user]
+    *id {label:"INTEGER"}
+    name {label:"VARCHAR(80)"}
+    *person_id {label:"INTEGER"}
+    lastLoggedIn {label:"VARCHAR(80)"}
+
+person 1--? user

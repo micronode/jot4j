@@ -1,0 +1,20 @@
+[textnote]
+    *id {label:"INTEGER"}
+    timestamp {label:"VARCHAR(80)"}
+    summary {label:"VARCHAR(80)"}
+    body {label:"VARCHAR(1024)"}
+    *status_id {label:"URI"}
+    *project_id {label:"URI"}
+    *folder_id {label:"URI"}
+    *author_id {label:"URI"}
+
+[textnote_label]
+    *textnote_id {label:"INTEGER"}
+    label_id {label:"URI"}
+
+[textnote_reference]
+    *textnote_id {label:"INTEGER"}
+    reference_uri {label:"VARCHAR(1024)"}
+
+textnote 1--* textnote_label
+textnote 1--* textnote_reference

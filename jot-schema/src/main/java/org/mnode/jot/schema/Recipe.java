@@ -3,7 +3,7 @@ package org.mnode.jot.schema;
 /**
  * Describes a method for making things (e.g. baking, DIY, etc.).
  */
-public interface Recipe extends Jot<Recipe> {
+public interface Recipe extends Jot {
 
     Recipe ingredient(String ingredient);
 

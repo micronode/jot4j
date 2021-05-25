@@ -5,7 +5,7 @@ import java.awt.geom.Point2D;
 /**
  * A geographical location.
  */
-public interface Place extends Entity<Place> {
+public interface Place extends Entity {
 
     Place coordinates(Point2D.Float coordinates);
 

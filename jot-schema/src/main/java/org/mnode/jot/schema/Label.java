@@ -4,12 +4,10 @@ import java.awt.*;
 
 /**
  * A tag used to classify jots.
- *
- * @param <T> optional sub-type for specialised tags.
  */
-public interface Label<T extends Label> extends Entity<T> {
+public interface Label extends Entity {
 
-    T colour(Color colour);
+    <T extends Label> T color(Color color);
 
     interface Provider {
 

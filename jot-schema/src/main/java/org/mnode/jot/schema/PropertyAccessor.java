@@ -5,7 +5,7 @@ public interface PropertyAccessor {
     enum Property {
         Uid, Name,
 
-        Color,
+        Color, Url,
 
         Summary, Note,
 
@@ -13,7 +13,7 @@ public interface PropertyAccessor {
 
         CreatedAt, UpdatedAt,
 
-        AssetType
+        AssetType, TaskType
     }
 
     boolean isSupported(Property property);

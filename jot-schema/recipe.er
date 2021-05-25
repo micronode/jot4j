@@ -1,0 +1,40 @@
+[ingredient]
+    *id {label:"INTEGER"}
+    name {label:"VARCHAR(80)"}
+
+[instruction]
+    *id {label:"INTEGER"}
+    summary {label:"VARCHAR(80)"}
+
+[recipe]
+    *id {label:"INTEGER"}
+    summary {label:"VARCHAR(80)"}
+    body {label:"VARCHAR(1024)"}
+    *status_id {label:"INTEGER"}
+    *project_id {label:"INTEGER"}
+    *folder_id {label:"INTEGER"}
+    *author_id {label:"INTEGER"}
+
+[recipe_label]
+    *recipe_id {label:"INTEGER"}
+    *label_id {label:"INTEGER"}
+
+[recipe_reference]
+    *recipe_id {label:"INTEGER"}
+    reference_uri {label:"VARCHAR(1024)"}
+
+[recipe_ingredient]
+    *recipe_id {label:"INTEGER"}
+    *ingredient_id {label:"INTEGER"}
+    quantity {label:"VARCHAR(80)"}
+
+[recipe_instruction]
+    *recipe_id {label:"INTEGER"}
+    *instruction_id {label:"INTEGER"}
+
+ingredient 1--* recipe_ingredient
+instruction 1--* recipe_instruction
+recipe 1--* recipe_label
+recipe 1--* recipe_reference
+recipe 1--* recipe_ingredient
+recipe 1--* recipe_instruction

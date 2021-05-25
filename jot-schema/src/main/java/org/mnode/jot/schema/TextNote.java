@@ -3,7 +3,7 @@ package org.mnode.jot.schema;
 /**
  * Record text-based information.
  */
-public interface TextNote extends Jot<TextNote> {
+public interface TextNote extends Jot {
 
     TextNote note(String note);
 

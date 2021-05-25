@@ -3,7 +3,7 @@ package org.mnode.jot.schema;
 /**
  * Records the outcome of a past {@link Meeting}.
  */
-public interface Minutes extends Jot<Minutes> {
+public interface Minutes extends Jot {
 
     Minutes meeting(Meeting meeting);
 

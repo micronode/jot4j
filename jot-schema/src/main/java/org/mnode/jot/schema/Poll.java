@@ -5,9 +5,9 @@ package org.mnode.jot.schema;
  *
  * @param <T> a jot sub-type used to limit the possible poll options.
  */
-public interface Poll<T extends Jot> extends Jot<Poll> {
+public interface Poll<T extends Jot> extends Jot {
 
-    Poll option(T option);
+    Poll<T> option(T option);
 
     interface Provider {
 

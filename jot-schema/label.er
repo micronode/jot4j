@@ -1,0 +1,30 @@
+[label]
+    *id {label:"INTEGER"}
+    name {label:"VARCHAR(80)"}
+    color {label:"VARCHAR(80)"}
+    icon {label:"URI"}
+
+[status]
+    *id {label:"INTEGER"}
+    displayName {label:"VARCHAR(80)"}
+    *label_id {label:"INTEGER"}
+
+[project]
+    *id {label:"INTEGER"}
+    *owner_id {label:"INTEGER"}
+    *label_id {label:"INTEGER"}
+
+[folder]
+    *id {label:"INTEGER"}
+    *parent_id {label:"INTEGER"}
+    *label_id {label:"INTEGER"}
+
+[task_type]
+    *id {label:"INTEGER"}
+    displayName {label:"VARCHAR(80)"}
+    *label_id {label:"INTEGER"}
+
+label 1--? status
+label 1--? project
+label 1--? folder
+label 1--? task_type

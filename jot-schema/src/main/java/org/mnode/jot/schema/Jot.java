@@ -7,11 +7,11 @@ package org.mnode.jot.schema;
  *     new JotFactory().createJot().summary("Doe a deer, a female deer..").authoredBy(aUser).taggedWith(aLabel);
  * </pre>
  */
-public interface Jot<T extends Jot> extends PropertyAccessor {
+public interface Jot extends PropertyAccessor {
 
-    T summary(String summary);
+    <T extends Jot> T summary(String summary);
 
-    <P extends Person> T authoredBy(P...people);
+    <T extends Jot> T authoredBy(Person... authors);
 
-    <L extends Label> T taggedWith(L...labels);
+    <T extends Jot> T taggedWith(Label... labels);
 }

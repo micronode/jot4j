@@ -1,0 +1,45 @@
+[meeting_minutes]
+    *id {label:"INTEGER"}
+    summary {label:"VARCHAR(80)"}
+    body {label:"VARCHAR(1024)"}
+    *meeting_id {label:"INTEGER"}
+    *status_id {label:"URI"}
+    *project_id {label:"URI"}
+    *folder_id {label:"URI"}
+    *author_id {label:"URI"}
+
+[meeting]
+    *id {label:"INTEGER"}
+    summary {label:"VARCHAR(80)"}
+    body {label:"VARCHAR(1024)"}
+    *organizer_id {label:"URI"}
+    *status_id {label:"URI"}
+    start_time {label:"VARCHAR(1024)"}
+    end_time {label:"VARCHAR(1024)"}
+
+[meeting_minutes_label]
+    *meeting_id {label:"INTEGER"}
+    label_id {label:"URI"}
+
+[meeting_minutes_reference]
+    *meeting_id {label:"INTEGER"}
+    reference_uri {label:"VARCHAR(1024)"}
+
+[meeting_minutes_absentee]
+    *meeting_id {label:"INTEGER"}
+    attendee_id {label:"URI"}
+
+[meeting_minutes_action]
+    *meeting_id {label:"INTEGER"}
+    action_id {label:"URI"}
+
+[meeting_attendee]
+    *meeting_id {label:"INTEGER"}
+    attendee_id {label:"URI"}
+
+meeting_minutes 1--1 meeting
+meeting_minutes 1--* meeting_minutes_label
+meeting_minutes 1--* meeting_minutes_reference
+meeting_minutes 1--* meeting_minutes_absentee
+meeting_minutes 1--* meeting_minutes_action
+meeting 1--* meeting_attendee

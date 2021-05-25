@@ -5,7 +5,7 @@ package org.mnode.jot.schema;
  * For example, you might have a status of <pre>MeetingCancelled</pre> that is applied to cancelled meetings, but
  * for display purposes might want to show: <pre>Cancelled</pre>.
  */
-public interface Status extends Label<Status> {
+public interface Status extends Label {
 
     Status displayName(String displayName);
 

@@ -1,0 +1,21 @@
+[task]
+    *id {label:"INTEGER"}
+    summary {label:"VARCHAR(80)"}
+    body {label:"VARCHAR(1024)"}
+    due_date {label:"VARCHAR(80)"}
+    *task_type_id {label:"URI"}
+    *status_id {label:"URI"}
+    *project_id {label:"URI"}
+    *folder_id {label:"URI"}
+    *author_id {label:"URI"}
+
+[task_label]
+    *task_id {label:"INTEGER"}
+    label_id {label:"URI"}
+
+[task_reference]
+    *task_id {label:"INTEGER"}
+    reference_uri {label:"URI"}
+
+task 1--* task_label
+task 1--* task_reference

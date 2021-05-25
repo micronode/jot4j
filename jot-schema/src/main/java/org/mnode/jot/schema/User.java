@@ -5,7 +5,7 @@ import java.time.Instant;
 /**
  * Represents a user capable of interacting with jots and other entities.
  */
-public interface User extends Person<User> {
+public interface User extends Person {
 
     User lastLoggedIn(Instant lastLoggedIn);
 

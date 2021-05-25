@@ -4,14 +4,12 @@ import java.time.ZonedDateTime;
 
 /**
  * Defines a time-based jot with optional duration and location.
- *
- * @param <T> a sub-type for specialised events
  */
-public interface Event<T extends Event> extends Jot<T> {
+public interface Event extends Jot {
 
-    T startTime(ZonedDateTime startTime);
+    Event startTime(ZonedDateTime startTime);
 
-    T endTime(ZonedDateTime endTime);
+    Event endTime(ZonedDateTime endTime);
 
     interface Provider {
 

@@ -5,7 +5,7 @@ import java.time.ZonedDateTime;
 /**
  * Used to track a schedule of financial transactions.
  */
-public interface Invoice extends Jot<Invoice> {
+public interface Invoice extends Jot {
 
     enum PaymentStatus { PAID, UNPAID }
 
@@ -13,7 +13,7 @@ public interface Invoice extends Jot<Invoice> {
 
     Invoice paymentDueDate(ZonedDateTime paymentDueDate);
 
-    Invoice attachment(Attachment attachment);
+    Invoice attachment(ExternalLink externalLink);
 
     interface Provider {
 
