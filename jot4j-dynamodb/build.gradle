@@ -1,0 +1,32 @@
+plugins {
+    id 'groovy'
+    id 'java-library'
+    id "io.freefair.lombok" version "6.0.0-m2"
+}
+
+repositories {
+    maven {
+        url = 'https://s3-us-west-2.amazonaws.com/dynamodb-local/release'
+    }
+}
+
+dependencies {
+    api project(':jot-core'),
+            "org.mnode.ical4j:ical4j-json:$ical4jJsonVersion"
+
+    implementation platform('com.amazonaws:aws-java-sdk-bom:1.11.878')
+
+    implementation 'com.amazonaws:aws-java-sdk-dynamodb'
+
+    testCompile "org.codehaus.groovy:groovy:$groovyVersion"
+
+    testImplementation platform("org.spockframework:spock-bom:2.0-M4-groovy-3.0"),
+            "org.spockframework:spock-core",
+            "org.slf4j:slf4j-log4j12:$slf4jVersion"
+
+    testImplementation 'com.amazonaws:DynamoDBLocal:[1.12,2.0)'
+}
+
+test {
+    useJUnitPlatform()
+}
