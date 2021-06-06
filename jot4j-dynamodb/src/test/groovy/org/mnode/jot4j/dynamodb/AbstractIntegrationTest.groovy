@@ -13,7 +13,7 @@ import net.fortuna.ical4j.model.ContentBuilder
 import net.fortuna.ical4j.model.component.VEvent
 import net.fortuna.ical4j.model.property.Attach
 import net.fortuna.ical4j.util.Calendars
-import org.mnode.jot4j.dynamodb.mapper.CardCategory
+import org.mnode.jot4j.dynamodb.mapper.CardOrg
 import org.mnode.jot4j.dynamodb.mapper.Event
 import spock.lang.Shared
 import spock.lang.Specification
@@ -68,7 +68,7 @@ class AbstractIntegrationTest extends Specification {
     }
 
     def setup() {
-        CreateTableRequest createTableRequest = new CreateTableRequestBuilder().dynamoDb(dynamoDB).typeClass(CardCategory).build()
+        CreateTableRequest createTableRequest = new CreateTableRequestBuilder().dynamoDb(dynamoDB).typeClass(CardOrg).build()
         dynamoDB.createTable(createTableRequest)
 
         CreateTableRequest createCalTableRequest = new CreateTableRequestBuilder().dynamoDb(dynamoDB).typeClass(Event).build()
@@ -76,7 +76,7 @@ class AbstractIntegrationTest extends Specification {
     }
 
     def cleanup() {
-        DeleteTableRequest deleteCardTableRequest = new DynamoDBMapper(dynamoDB).generateDeleteTableRequest(CardCategory)
+        DeleteTableRequest deleteCardTableRequest = new DynamoDBMapper(dynamoDB).generateDeleteTableRequest(CardOrg)
         dynamoDB.deleteTable(deleteCardTableRequest)
 
         DeleteTableRequest deleteCalTableRequest = new DynamoDBMapper(dynamoDB).generateDeleteTableRequest(Event)
