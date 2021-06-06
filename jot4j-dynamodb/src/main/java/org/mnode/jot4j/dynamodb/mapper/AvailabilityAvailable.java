@@ -4,34 +4,30 @@ import com.amazonaws.services.dynamodbv2.datamodeling.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @AllArgsConstructor
 @Builder
 @Data
-public class CardCategory extends AbstractCardMapper {
+@NoArgsConstructor
+public class AvailabilityAvailable extends AbstractCalMapper {
 
-    private final String pkPrefix;
+    @DynamoDBAttribute(attributeName = "AvailabilityUid")
+    private String availabilityUid;
 
-    @DynamoDBAttribute(attributeName = "Uid")
-    private String uid;
-
-    @DynamoDBAttribute(attributeName = "Name")
-    private String name;
-
-    public CardCategory(String pkPrefix) {
-        this.pkPrefix = pkPrefix;
-    }
+    @DynamoDBAttribute(attributeName = "AvailableUid")
+    private String availableUid;
 
     @Override
     @DynamoDBHashKey(attributeName = "PK")
     public String getPK() {
-        return pkPrefix + "#" + uid;
+        return "AVAILABILITY#" + availabilityUid;
     }
 
     @Override
     @DynamoDBRangeKey(attributeName = "SK")
     public String getSK() {
-        return "CATEGORY#" + name;
+        return "AVAILABLE#" + availableUid;
     }
 
     @DynamoDBIndexHashKey(attributeName = "GSI1_PK", globalSecondaryIndexName = "GSI1")
@@ -45,7 +41,8 @@ public class CardCategory extends AbstractCardMapper {
     }
 
     @Override
+    @DynamoDBAttribute(attributeName = "TYPE")
     public String getType() {
-        return pkPrefix + "_CATEGORY";
+        return "AVAILABILITY_AVAILABLE";
     }
 }

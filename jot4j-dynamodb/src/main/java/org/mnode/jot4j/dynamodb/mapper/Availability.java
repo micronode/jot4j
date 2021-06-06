@@ -4,6 +4,8 @@ import com.amazonaws.services.dynamodbv2.datamodeling.*;
 import lombok.*;
 import net.fortuna.ical4j.model.component.VAvailability;
 
+import java.util.Set;
+
 @EqualsAndHashCode(callSuper = true)
 @AllArgsConstructor
 @Builder
@@ -20,6 +22,9 @@ public class Availability extends AbstractCalMapper {
     @DynamoDBAttribute(attributeName = "Data")
     @DynamoDBTypeConverted(converter = VAvailabilityConverter.class)
     private VAvailability data;
+
+    @DynamoDBAttribute(attributeName = "Categories")
+    private Set<String> categories;
 
     @Override
     @DynamoDBHashKey(attributeName = "PK")
