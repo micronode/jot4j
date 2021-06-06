@@ -28,6 +28,9 @@ public class GroupCard extends AbstractCardMapper {
     @DynamoDBTypeConverted(converter = VCardConverter.class)
     private VCard data;
 
+    @DynamoDBAttribute(attributeName = "Categories")
+    private Set<String> categories;
+
     @Override
     @DynamoDBHashKey(attributeName = "PK")
     public String getPK() {

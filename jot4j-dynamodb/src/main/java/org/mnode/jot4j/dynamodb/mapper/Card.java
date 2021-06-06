@@ -1,10 +1,8 @@
 package org.mnode.jot4j.dynamodb.mapper;
 
-import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBAttribute;
-import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBHashKey;
-import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBRangeKey;
-import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBVersionAttribute;
+import com.amazonaws.services.dynamodbv2.datamodeling.*;
 import lombok.*;
+import net.fortuna.ical4j.vcard.VCard;
 
 import java.util.Set;
 
@@ -24,9 +22,12 @@ public class Card extends AbstractCardMapper {
     @DynamoDBAttribute(attributeName = "Fn")
     private Set<String> fn;
 
-//    @DynamoDBAttribute(attributeName = "Data")
-//    @DynamoDBTypeConverted(converter = VCardConverter.class)
-//    private VCard data;
+    @DynamoDBAttribute(attributeName = "Data")
+    @DynamoDBTypeConverted(converter = VCardConverter.class)
+    private VCard data;
+
+    @DynamoDBAttribute(attributeName = "Categories")
+    private Set<String> categories;
 
     @Override
     @DynamoDBHashKey(attributeName = "PK")

@@ -1,9 +1,6 @@
 package org.mnode.jot4j.dynamodb.mapper;
 
-import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBAttribute;
-import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBIndexHashKey;
-import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBIndexRangeKey;
-import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBRangeKey;
+import com.amazonaws.services.dynamodbv2.datamodeling.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -29,7 +26,7 @@ public class CardOrg extends AbstractCardMapper {
     }
 
     @Override
-    @DynamoDBIndexHashKey(attributeName = "PK")
+    @DynamoDBHashKey(attributeName = "PK")
     public String getPK() {
         return pkPrefix + "#" + uid;
     }

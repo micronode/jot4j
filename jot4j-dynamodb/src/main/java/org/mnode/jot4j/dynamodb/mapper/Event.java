@@ -4,6 +4,8 @@ import com.amazonaws.services.dynamodbv2.datamodeling.*;
 import lombok.*;
 import net.fortuna.ical4j.model.component.VEvent;
 
+import java.util.Set;
+
 @EqualsAndHashCode(callSuper = true)
 @AllArgsConstructor
 @Builder
@@ -21,6 +23,9 @@ public class Event extends AbstractCalMapper {
     @DynamoDBTypeConverted(converter = VEventConverter.class)
     private VEvent data;
 
+    @DynamoDBAttribute(attributeName = "Categories")
+    private Set<String> categories;
+
     @Override
     @DynamoDBHashKey(attributeName = "PK")
     public String getPK() {
@@ -35,7 +40,7 @@ public class Event extends AbstractCalMapper {
 
     @DynamoDBIndexHashKey(attributeName = "GSI1_PK", globalSecondaryIndexName = "GSI1")
     public String getGSI1PK() {
-        return getPK();
+        return getType();
     }
 
     @DynamoDBIndexRangeKey(attributeName = "GSI1_SK", globalSecondaryIndexName = "GSI1")
