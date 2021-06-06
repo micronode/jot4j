@@ -19,7 +19,7 @@ import java.util.List;
  * NOTE: When used in conjunction with jotapi it is expected the event data will not contain any alarms as they
  * are separated by distinct API endpoints.
  */
-public class CreateEvent extends AbstractCreateCommand<VEvent> {
+public class CreateEvent extends AbstractCommand<VEvent> implements CreateCommand {
 
     public CreateEvent(AmazonDynamoDB dynamoDB) {
         super(dynamoDB);

@@ -12,7 +12,7 @@ import org.mnode.jot4j.dynamodb.mapper.ToDoRecurrence;
 import java.util.ArrayList;
 import java.util.List;
 
-public class CreateToDo extends AbstractCreateCommand<VToDo> {
+public class CreateToDo extends AbstractCommand<VToDo> implements CreateCommand {
 
     public CreateToDo(AmazonDynamoDB dynamoDB) {
         super(dynamoDB);

@@ -4,24 +4,43 @@ import com.amazonaws.services.dynamodbv2.AmazonDynamoDB;
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBMapper;
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBQueryExpression;
 import com.amazonaws.services.dynamodbv2.datamodeling.PaginatedQueryList;
+import com.amazonaws.services.dynamodbv2.model.AttributeValue;
 import org.mnode.jot4j.dynamodb.mapper.Event;
+
+import java.util.Collections;
 
 /**
  * Return events matching specified criteria.
  *
  * Criteria should include:
- *  * UID
- *  * Include recurrences (return latest version of event and all recurrence instances)
- *  * Include revisions (return all revisions of the event, and if "include recurrences = true" all revisions of recurrences)
+ *  * Calendar UID
+ *  * Categories
+ *  * Organizers
+ *  * Attendees
  */
-public class ListEvents extends AbstractListCommand<Event> {
+public class ListEvents extends AbstractQuery<Event> {
 
     public ListEvents(AmazonDynamoDB dynamoDB) {
         super(dynamoDB);
     }
 
-    public PaginatedQueryList<Event> execute(DynamoDBQueryExpression<Event> query) {
+    @Override
+    public <R extends Event> PaginatedQueryList<R> execute(DynamoDBQueryExpression<R> query, Class<R> typeClass) {
         DynamoDBMapper mapper = new DynamoDBMapper(dynamoDB);
-        return mapper.query(Event.class, query);
+        return mapper.query(typeClass, query);
+    }
+
+    public PaginatedQueryList<Event> execute(String uid) {
+        return execute(new DynamoDBQueryExpression<Event>()
+                .withExpressionAttributeValues(
+                        Collections.singletonMap(":val1", new AttributeValue().withS("EVENT#" + uid)))
+                .withKeyConditionExpression("PK = :val1"), Event.class);
+    }
+
+    public PaginatedQueryList<Event> execute(String... categories) {
+        return execute(new DynamoDBQueryExpression<Event>()
+                .withExpressionAttributeValues(
+                        Collections.singletonMap(":val1", new AttributeValue().withS("EVENT#" + categories)))
+                .withKeyConditionExpression("PK = :val1"), Event.class);
     }
 }

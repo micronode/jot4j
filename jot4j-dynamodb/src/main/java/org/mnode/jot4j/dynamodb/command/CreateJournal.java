@@ -12,7 +12,7 @@ import org.mnode.jot4j.dynamodb.mapper.JournalRecurrence;
 import java.util.ArrayList;
 import java.util.List;
 
-public class CreateJournal extends AbstractCreateCommand<VJournal> {
+public class CreateJournal extends AbstractCommand<VJournal> implements CreateCommand {
 
     public CreateJournal(AmazonDynamoDB dynamoDB) {
         super(dynamoDB);

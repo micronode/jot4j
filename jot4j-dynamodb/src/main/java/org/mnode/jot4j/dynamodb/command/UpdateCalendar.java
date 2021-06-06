@@ -8,7 +8,7 @@ import net.fortuna.ical4j.model.Property;
 import java.util.ArrayList;
 import java.util.List;
 
-public class UpdateCalendar extends AbstractCreateCommand<Calendar> {
+public class UpdateCalendar extends AbstractCommand<Calendar> {
 
     public UpdateCalendar(AmazonDynamoDB dynamoDB) {
         super(dynamoDB);

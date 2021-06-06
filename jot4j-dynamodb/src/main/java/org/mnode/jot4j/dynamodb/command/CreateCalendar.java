@@ -16,7 +16,7 @@ import java.util.List;
  * NOTE: When used in conjunction with jotapi it is expected the calendar data will not contain any components as they
  * are separated by distinct API endpoints.
  */
-public class CreateCalendar extends AbstractCreateCommand<Calendar> {
+public class CreateCalendar extends AbstractCommand<Calendar> implements CreateCommand {
 
     public CreateCalendar(AmazonDynamoDB dynamoDB) {
         super(dynamoDB);
