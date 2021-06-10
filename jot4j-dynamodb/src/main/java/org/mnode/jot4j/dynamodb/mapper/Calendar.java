@@ -1,14 +1,9 @@
 package org.mnode.jot4j.dynamodb.mapper;
 
-import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBAttribute;
-import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBHashKey;
-import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBRangeKey;
-import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBTypeConverted;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import com.amazonaws.services.dynamodbv2.datamodeling.*;
+import lombok.*;
 
+@EqualsAndHashCode(callSuper = true)
 @AllArgsConstructor
 @Builder
 @Data
@@ -38,5 +33,15 @@ public class Calendar extends AbstractCalMapper {
     @DynamoDBAttribute(attributeName = "TYPE")
     public String getType() {
         return "CALENDAR";
+    }
+
+    @DynamoDBIndexHashKey(attributeName = "GSI2_PK", globalSecondaryIndexName = "GSI2")
+    public String getGSI2PK() {
+        return getPK();
+    }
+
+    @DynamoDBIndexRangeKey(attributeName = "GSI2_SK", globalSecondaryIndexName = "GSI2")
+    public String getGSI2SK() {
+        return getSK();
     }
 }

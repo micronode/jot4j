@@ -1,6 +1,8 @@
 package org.mnode.jot4j.dynamodb.mapper;
 
-import com.amazonaws.services.dynamodbv2.datamodeling.*;
+import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBAttribute;
+import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBHashKey;
+import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBRangeKey;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -10,7 +12,7 @@ import java.nio.ByteBuffer;
 @AllArgsConstructor
 @Builder
 @Data
-public class Attachment extends AbstractCardMapper {
+public class Attachment extends AbstractCalMapper {
 
     private final String pkPrefix;
 
@@ -37,16 +39,6 @@ public class Attachment extends AbstractCardMapper {
     @DynamoDBRangeKey(attributeName = "SK")
     public String getSK() {
         return "ATTACH#" + messageDigest;
-    }
-
-    @DynamoDBIndexHashKey(attributeName = "GSI1_PK", globalSecondaryIndexName = "GSI1")
-    public String getGSI1PK() {
-        return getSK();
-    }
-
-    @DynamoDBIndexRangeKey(attributeName = "GSI1_SK", globalSecondaryIndexName = "GSI1")
-    public String getGSI1SK() {
-        return getPK();
     }
 
     @Override

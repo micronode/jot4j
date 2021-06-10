@@ -1,17 +1,16 @@
 package org.mnode.jot4j.dynamodb.command;
 
-import com.amazonaws.services.dynamodbv2.AmazonDynamoDB;
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBMapper;
 import net.fortuna.ical4j.model.Property;
 import net.fortuna.ical4j.model.component.VEvent;
 import net.fortuna.ical4j.model.property.Attendee;
-import net.fortuna.ical4j.model.property.Organizer;
 import org.mnode.jot4j.dynamodb.mapper.Event;
 import org.mnode.jot4j.dynamodb.mapper.EventRecurrence;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * Creates a new event or event recurrence item and any encapsulated alarms.
@@ -21,8 +20,8 @@ import java.util.List;
  */
 public class CreateEvent extends AbstractCommand<VEvent> implements CreateCommand {
 
-    public CreateEvent(AmazonDynamoDB dynamoDB) {
-        super(dynamoDB);
+    public CreateEvent(DynamoDBMapper mapper) {
+        super(mapper);
     }
 
     @Override
@@ -38,21 +37,14 @@ public class CreateEvent extends AbstractCommand<VEvent> implements CreateComman
         }
 
         input.getAlarms().forEach(alarm -> {
-            model.add(createAlarm(alarm));
-            model.add(createOrganizer(alarm, "VALARM", alarm.getProperty(Property.ORGANIZER)));
-            model.add(alarm.getProperties(Property.ATTENDEE).stream().map(attendee ->
-                    createAttendee(alarm, "VALARM", (Attendee) attendee)));
-            model.add(createEventAlarm(input, alarm));
+            model.add(createAlarm(alarm, input));
+            model.addAll(alarm.getProperties(Property.ATTENDEE).stream().map(attendee ->
+                    createAttendee(alarm, "VALARM", (Attendee) attendee)).collect(Collectors.toList()));
         });
-        Organizer organizer = input.getProperty(Property.ORGANIZER);
-        if (organizer != null) {
-            model.add(createOrganizer(input, "VEVENT", input.getProperty(Property.ORGANIZER)));
-        }
         input.getProperties(Property.ATTENDEE).forEach(attendee -> {
             model.add(createAttendee(input, "VEVENT", (Attendee) attendee));
         });
 
-        DynamoDBMapper mapper = new DynamoDBMapper(dynamoDB);
         mapper.batchSave(model.toArray());
     }
 
@@ -73,19 +65,15 @@ public class CreateEvent extends AbstractCommand<VEvent> implements CreateComman
             }
 
             event.getAlarms().forEach(alarm -> {
-                model.add(createAlarm(alarm));
-                model.add(createOrganizer(alarm, "VALARM", alarm.getProperty(Property.ORGANIZER)));
+                model.add(createAlarm(alarm, event));
                 model.add(alarm.getProperties(Property.ATTENDEE).stream().map(attendee ->
                         createAttendee(alarm, "VALARM", (Attendee) attendee)));
-                model.add(createEventAlarm(event, alarm));
             });
-            model.add(createOrganizer(event, "VEVENT", event.getProperty(Property.ORGANIZER)));
             event.getProperties(Property.ATTENDEE).forEach(attendee -> {
                 model.add(createAttendee(event, "VEVENT", (Attendee) attendee));
             });
         });
 
-        DynamoDBMapper mapper = new DynamoDBMapper(dynamoDB);
         mapper.batchSave(model.toArray());
     }
 }

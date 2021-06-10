@@ -16,9 +16,16 @@ public interface CreateCommand {
     }
 
     default Event createEvent(VEvent vEvent) {
+        return createEvent(vEvent, null);
+    }
+
+    default Event createEvent(VEvent vEvent, Calendar calendar) {
         Event event = new Event();
         event.setUid(vEvent.getProperty(Property.UID).getValue());
         event.setData(vEvent);
+        if (calendar != null) {
+            event.setCalendarUid(calendar.getProperty(Property.UID).getValue());
+        }
         return event;
     }
 
@@ -37,13 +44,6 @@ public interface CreateCommand {
         return eventRecurrence;
     }
 
-    default CalendarEvent createCalendarEvent(Calendar calendar, VEvent event) {
-        CalendarEvent calendarEvent = new CalendarEvent();
-        calendarEvent.setCalendarUid(calendar.getProperty(Property.UID).getValue());
-        calendarEvent.setEventUid(event.getProperty(Property.UID).getValue());
-        return calendarEvent;
-    }
-
     default Journal createJournal(VJournal vJournal) {
         Journal journal = new Journal();
         journal.setUid(vJournal.getProperty(Property.UID).getValue());
@@ -57,13 +57,6 @@ public interface CreateCommand {
         journalRecurrence.setRecurrenceId(vJournal.getProperty(Property.RECURRENCE_ID).getValue());
         journalRecurrence.setData(vJournal);
         return journalRecurrence;
-    }
-
-    default CalendarJournal createCalendarJournal(Calendar calendar, VJournal vJournal) {
-        CalendarJournal calendarJournal = new CalendarJournal();
-        calendarJournal.setCalendarUid(calendar.getProperty(Property.UID).getValue());
-        calendarJournal.setJournalUid(vJournal.getProperty(Property.UID).getValue());
-        return calendarJournal;
     }
 
     default ToDo createToDo(VToDo vToDo) {
@@ -81,41 +74,14 @@ public interface CreateCommand {
         return toDoRecurrence;
     }
 
-    default CalendarToDo createCalendarToDo(Calendar calendar, VToDo vToDo) {
-        CalendarToDo calendarToDo = new CalendarToDo();
-        calendarToDo.setCalendarUid(calendar.getProperty(Property.UID).getValue());
-        calendarToDo.setToDoUid(vToDo.getProperty(Property.UID).getValue());
-        return calendarToDo;
-    }
-
-    default Alarm createAlarm(VAlarm vAlarm) {
+    default Alarm createAlarm(VAlarm vAlarm, Component component) {
         Alarm alarm = new Alarm();
         alarm.setUid(vAlarm.getProperty(Property.UID).getValue());
         alarm.setData(vAlarm);
+        if (component != null) {
+            alarm.setComponentUid(component.getProperty(Property.UID).getValue());
+        }
         return alarm;
-    }
-
-    default EventAlarm createEventAlarm(VEvent event, VAlarm alarm) {
-        EventAlarm eventAlarm = new EventAlarm();
-        eventAlarm.setEventUid(event.getProperty(Property.UID).getValue());
-        eventAlarm.setAlarmUid(alarm.getProperty(Property.UID).getValue());
-        return eventAlarm;
-    }
-
-    default ToDoAlarm createToDoAlarm(VToDo vToDo, VAlarm alarm) {
-        ToDoAlarm toDoAlarm = new ToDoAlarm();
-        toDoAlarm.setToDoUid(vToDo.getProperty(Property.UID).getValue());
-        toDoAlarm.setAlarmUid(alarm.getProperty(Property.UID).getValue());
-        return toDoAlarm;
-    }
-
-    default org.mnode.jot4j.dynamodb.mapper.Organizer createOrganizer(Component component, String type,
-                                                                        net.fortuna.ical4j.model.property.Organizer organizer) {
-
-        org.mnode.jot4j.dynamodb.mapper.Organizer organizer1 = new org.mnode.jot4j.dynamodb.mapper.Organizer(type);
-        organizer1.setUid(component.getProperty(Property.UID).getValue());
-        organizer1.setCalAddress(organizer.getCalAddress().toString());
-        return organizer1;
     }
 
     default org.mnode.jot4j.dynamodb.mapper.Attendee createAttendee(Component component, String type,

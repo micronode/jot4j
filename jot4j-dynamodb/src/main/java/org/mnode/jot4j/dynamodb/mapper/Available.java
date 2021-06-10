@@ -1,10 +1,9 @@
 package org.mnode.jot4j.dynamodb.mapper;
 
-import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBAttribute;
-import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBHashKey;
-import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBRangeKey;
-import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBTypeConverted;
+import com.amazonaws.services.dynamodbv2.datamodeling.*;
 import lombok.*;
+
+import java.util.Date;
 
 @EqualsAndHashCode
 @AllArgsConstructor
@@ -20,6 +19,12 @@ public class Available extends AbstractCalMapper {
     @DynamoDBTypeConverted(converter = AvailableConverter.class)
     private net.fortuna.ical4j.model.component.Available data;
 
+    @DynamoDBAttribute(attributeName = "AvailabilityUid")
+    private String availabilityUid;
+
+    @DynamoDBAttribute(attributeName = "DtStart")
+    private Date startDate;
+
     @Override
     @DynamoDBHashKey(attributeName = "PK")
     public String getPK() {
@@ -30,6 +35,16 @@ public class Available extends AbstractCalMapper {
     @DynamoDBRangeKey(attributeName = "SK")
     public String getSK() {
         return getPK();
+    }
+
+    @DynamoDBIndexHashKey(attributeName = "GSI3_PK", globalSecondaryIndexName = "GSI3")
+    public String getGSI3PK() {
+        return getAvailabilityUid();
+    }
+
+    @DynamoDBIndexRangeKey(attributeName = "GSI3_SK", globalSecondaryIndexName = "GSI3")
+    public Date getGSI3SK() {
+        return getStartDate();
     }
 
     @Override

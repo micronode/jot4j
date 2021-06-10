@@ -1,6 +1,6 @@
 package org.mnode.jot4j.dynamodb.mapper
 
-import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBMapper
+
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBQueryExpression
 import com.amazonaws.services.dynamodbv2.model.AttributeValue
 import net.fortuna.ical4j.model.ContentBuilder
@@ -9,9 +9,6 @@ import org.mnode.jot4j.dynamodb.AbstractIntegrationTest
 class EventTest extends AbstractIntegrationTest {
 
     def 'create event'() {
-        given: 'a dynamodb mapper'
-        DynamoDBMapper mapper = [dynamoDB]
-
         when: 'an event is saved'
         Event event = []
         event.uid = '1234'

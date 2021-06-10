@@ -13,7 +13,7 @@ import lombok.NoArgsConstructor;
 @Builder
 @Data
 @NoArgsConstructor
-public class GroupCardMember extends AbstractCardMapper {
+public class GroupMember extends AbstractCardMapper {
 
     @DynamoDBAttribute(attributeName = "Uid")
     private String uid;

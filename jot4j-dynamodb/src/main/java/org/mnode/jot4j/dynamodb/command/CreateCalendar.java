@@ -1,6 +1,5 @@
 package org.mnode.jot4j.dynamodb.command;
 
-import com.amazonaws.services.dynamodbv2.AmazonDynamoDB;
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBMapper;
 import net.fortuna.ical4j.model.Calendar;
 import net.fortuna.ical4j.model.Component;
@@ -18,8 +17,8 @@ import java.util.List;
  */
 public class CreateCalendar extends AbstractCommand<Calendar> implements CreateCommand {
 
-    public CreateCalendar(AmazonDynamoDB dynamoDB) {
-        super(dynamoDB);
+    public CreateCalendar(DynamoDBMapper mapper) {
+        super(mapper);
     }
 
     @Override
@@ -27,12 +26,10 @@ public class CreateCalendar extends AbstractCommand<Calendar> implements CreateC
         List<Object> model = new ArrayList<>();
         model.add(createCalendar(input));
         input.getComponents(Component.VEVENT).forEach(event -> {
-                model.add(createEvent((VEvent) event));
-                model.add(createCalendarEvent(input, (VEvent) event));
+                model.add(createEvent((VEvent) event, input));
             }
         );
 
-        DynamoDBMapper mapper = new DynamoDBMapper(dynamoDB);
         mapper.batchSave(model.toArray());
     }
 
@@ -46,13 +43,11 @@ public class CreateCalendar extends AbstractCommand<Calendar> implements CreateC
         Arrays.stream(input).forEach(calendar -> {
             model.add(createCalendar(calendar));
             calendar.getComponents(Component.VEVENT).forEach(event -> {
-                    model.add(createEvent((VEvent) event));
-                    model.add(createCalendarEvent(calendar, (VEvent) event));
+                    model.add(createEvent((VEvent) event, calendar));
                 }
             );
         });
 
-        DynamoDBMapper mapper = new DynamoDBMapper(dynamoDB);
         mapper.batchSave(model.toArray());
     }
 }

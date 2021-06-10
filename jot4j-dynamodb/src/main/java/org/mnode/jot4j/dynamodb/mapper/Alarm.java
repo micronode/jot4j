@@ -1,9 +1,6 @@
 package org.mnode.jot4j.dynamodb.mapper;
 
-import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBAttribute;
-import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBHashKey;
-import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBRangeKey;
-import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBTypeConverted;
+import com.amazonaws.services.dynamodbv2.datamodeling.*;
 import lombok.*;
 import net.fortuna.ical4j.model.component.VAlarm;
 
@@ -21,6 +18,9 @@ public class Alarm extends AbstractCalMapper {
     @DynamoDBTypeConverted(converter = VAlarmConverter.class)
     private VAlarm data;
 
+    @DynamoDBAttribute(attributeName = "ComponentUid")
+    private String componentUid;
+
     @Override
     @DynamoDBHashKey(attributeName = "PK")
     public String getPK() {
@@ -37,5 +37,15 @@ public class Alarm extends AbstractCalMapper {
     @DynamoDBAttribute(attributeName = "TYPE")
     public String getType() {
         return "ALARM";
+    }
+
+    @DynamoDBIndexHashKey(attributeName = "GSI3_PK", globalSecondaryIndexName = "GSI3")
+    public String getGSI3PK() {
+        return getComponentUid();
+    }
+
+    @DynamoDBIndexRangeKey(attributeName = "GSI3_SK", globalSecondaryIndexName = "GSI3")
+    public String getGSI3SK() {
+        return getSK();
     }
 }

@@ -13,7 +13,7 @@ import java.util.Set;
 @Builder
 @Data
 @NoArgsConstructor
-public class GroupCard extends AbstractCardMapper {
+public class Group extends AbstractCardMapper {
 
     @DynamoDBAttribute(attributeName = "Uid")
     private String uid;

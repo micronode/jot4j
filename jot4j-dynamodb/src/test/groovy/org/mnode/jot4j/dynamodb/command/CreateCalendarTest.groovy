@@ -15,7 +15,7 @@ class CreateCalendarTest extends AbstractIntegrationTest {
         }
 
         when: 'a create command is executed'
-        CreateCalendar createCalendar = [dynamoDB]
+        CreateCalendar createCalendar = [mapper]
         createCalendar.execute(calendar)
 
         then: 'the item count matches expected'
@@ -37,16 +37,16 @@ class CreateCalendarTest extends AbstractIntegrationTest {
         }
 
         when: 'a create command is executed'
-        CreateCalendar createCalendar = [dynamoDB]
+        CreateCalendar createCalendar = [mapper]
         createCalendar.execute(calendar)
 
         then: 'the item count matches expected'
-        dynamoDB.describeTable("jotCal").getTable().getItemCount() == 3
+        dynamoDB.describeTable("jotCal").getTable().getItemCount() == 2
     }
 
     def 'create a calendar'() {
         given: 'a create calendar is executed'
-        CreateCalendar createCalendar = [dynamoDB]
+        CreateCalendar createCalendar = [mapper]
         createCalendar.execute(calendar)
 
         expect: 'the item count matches expected'
@@ -54,7 +54,7 @@ class CreateCalendarTest extends AbstractIntegrationTest {
 
         where:
         calendar    | expectedItemCount
-        calendar1   | 5
+        calendar1   | 3
         calendar2   | 1
     }
 

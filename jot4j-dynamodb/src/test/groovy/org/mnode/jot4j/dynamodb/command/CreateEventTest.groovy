@@ -7,7 +7,7 @@ class CreateEventTest extends AbstractIntegrationTest {
 
     def 'create an event'() {
         given: 'a create event is executed'
-        CreateEvent createEvent = [dynamoDB]
+        CreateEvent createEvent = [mapper]
         createEvent.execute(event)
 
         expect: 'the item count matches expected'

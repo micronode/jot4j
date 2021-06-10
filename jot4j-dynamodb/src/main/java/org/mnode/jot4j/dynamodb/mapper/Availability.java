@@ -4,6 +4,7 @@ import com.amazonaws.services.dynamodbv2.datamodeling.*;
 import lombok.*;
 import net.fortuna.ical4j.model.component.VAvailability;
 
+import java.util.Date;
 import java.util.Set;
 
 @EqualsAndHashCode(callSuper = true)
@@ -23,8 +24,20 @@ public class Availability extends AbstractCalMapper {
     @DynamoDBTypeConverted(converter = VAvailabilityConverter.class)
     private VAvailability data;
 
+    @DynamoDBAttribute(attributeName = "CalendarUid")
+    private String calendarUid;
+
+    @DynamoDBAttribute(attributeName = "Organizer")
+    private String organizer;
+
+    @DynamoDBAttribute(attributeName = "DtStart")
+    private Date startDate;
+
     @DynamoDBAttribute(attributeName = "Categories")
     private Set<String> categories;
+
+    @DynamoDBAttribute(attributeName = "Class")
+    private String classification;
 
     @Override
     @DynamoDBHashKey(attributeName = "PK")
@@ -38,13 +51,23 @@ public class Availability extends AbstractCalMapper {
         return "SEQUENCE#" + sequence;
     }
 
-    @DynamoDBIndexHashKey(attributeName = "GSI1_PK", globalSecondaryIndexName = "GSI1")
-    public String getGSI1PK() {
+    @DynamoDBIndexHashKey(attributeName = "GSI2_PK", globalSecondaryIndexName = "GSI2")
+    public String getGSI2PK() {
+        return "CALENDAR#" + getCalendarUid();
+    }
+
+    @DynamoDBIndexRangeKey(attributeName = "GSI2_SK", globalSecondaryIndexName = "GSI2")
+    public Date getGSI2SK() {
+        return getStartDate();
+    }
+
+    @DynamoDBIndexHashKey(attributeName = "GSI3_PK", globalSecondaryIndexName = "GSI3")
+    public String getGSI3PK() {
         return getPK();
     }
 
-    @DynamoDBIndexRangeKey(attributeName = "GSI1_SK", globalSecondaryIndexName = "GSI1")
-    public String getGSI1SK() {
+    @DynamoDBIndexRangeKey(attributeName = "GSI3_SK", globalSecondaryIndexName = "GSI3")
+    public String getGSI3SK() {
         return getSK();
     }
 

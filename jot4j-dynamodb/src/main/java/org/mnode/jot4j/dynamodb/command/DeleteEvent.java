@@ -1,13 +1,16 @@
 package org.mnode.jot4j.dynamodb.command;
 
-import com.amazonaws.services.dynamodbv2.AmazonDynamoDB;
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBMapper;
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBMapperConfig;
 import net.fortuna.ical4j.model.Property;
 import net.fortuna.ical4j.model.component.VEvent;
 import net.fortuna.ical4j.model.property.RecurrenceId;
 import net.fortuna.ical4j.model.property.Uid;
-import org.mnode.jot4j.dynamodb.mapper.*;
+import org.mnode.jot4j.dynamodb.mapper.Alarm;
+import org.mnode.jot4j.dynamodb.mapper.Attendee;
+import org.mnode.jot4j.dynamodb.mapper.Event;
+import org.mnode.jot4j.dynamodb.mapper.EventRecurrence;
+import org.mnode.jot4j.dynamodb.query.FilterQuery;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -17,29 +20,24 @@ import java.util.List;
  *
  * NOTE: To enable event replacement specify the CLOBBER {@link DynamoDBMapperConfig.SaveBehavior} in the mapper config.
  */
-public class DeleteEvent extends AbstractCommand<VEvent> implements ListQuery {
+public class DeleteEvent extends AbstractCommand<VEvent> implements FilterQuery {
 
-    public DeleteEvent(AmazonDynamoDB dynamoDB) {
-        super(dynamoDB);
-    }
-
-    public DeleteEvent(AmazonDynamoDB dynamoDB, DynamoDBMapperConfig mapperConfig) {
-        super(dynamoDB, mapperConfig);
+    public DeleteEvent(DynamoDBMapper mapper) {
+        super(mapper);
     }
 
     @Override
     public void execute(VEvent input) {
         List<Object> model = new ArrayList<>();
-        DynamoDBMapper mapper = new DynamoDBMapper(dynamoDB, mapperConfig);
 
         Uid uid = input.getProperty(Property.UID);
         RecurrenceId recurrenceId = input.getProperty(Property.RECURRENCE_ID);
         List<? extends Event> result;
         if (recurrenceId != null) {
-            result = mapper.query(EventRecurrence.class, listRecurrenceRevisions(uid.getValue(),
+            result = mapper.query(EventRecurrence.class, filterRecurrenceRevisions(uid.getValue(),
                     recurrenceId.getValue(), "EVENT"));
         } else {
-            result = mapper.query(Event.class, listComponentRevisions(uid.getValue(), "EVENT"));
+            result = mapper.query(Event.class, filterComponentRevisions(uid.getValue(), "EVENT"));
         }
 
         if (result.isEmpty()) {
@@ -50,15 +48,11 @@ public class DeleteEvent extends AbstractCommand<VEvent> implements ListQuery {
         // delete all references to the event (except when just deleting an event recurrence)..
         if (recurrenceId == null) {
             model.addAll(mapper.query(EventRecurrence.class,
-                    listComponentRecurrences(uid.getValue(), "EVENT")));
-            model.addAll(mapper.query(CalendarEvent.class,
-                    listComponentCalendars(uid.getValue(), "EVENT")));
-            model.addAll(mapper.query(EventAlarm.class,
-                    listComponentAlarms(uid.getValue(), "EVENT")));
-            model.addAll(mapper.query(Organizer.class,
-                    listComponentOrganizers(uid.getValue(), "EVENT")));
+                    filterComponentRecurrences(uid.getValue(), "EVENT")));
+            model.addAll(mapper.query(Alarm.class,
+                    filterComponentAlarms(uid.getValue(), "EVENT")));
             model.addAll(mapper.query(Attendee.class,
-                    listComponentAttendees(uid.getValue(), "EVENT")));
+                    filterComponentAttendees(uid.getValue(), "EVENT")));
         }
 
         mapper.batchDelete(model.toArray());

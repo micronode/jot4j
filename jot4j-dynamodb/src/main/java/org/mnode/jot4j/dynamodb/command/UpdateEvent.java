@@ -1,36 +1,31 @@
 package org.mnode.jot4j.dynamodb.command;
 
-import com.amazonaws.services.dynamodbv2.AmazonDynamoDB;
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBMapper;
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBMapperConfig;
 import net.fortuna.ical4j.model.Property;
 import net.fortuna.ical4j.model.component.VEvent;
+import net.fortuna.ical4j.model.property.Categories;
 import net.fortuna.ical4j.model.property.RecurrenceId;
 import net.fortuna.ical4j.model.property.Uid;
 import org.mnode.jot4j.dynamodb.mapper.Event;
 import org.mnode.jot4j.dynamodb.mapper.EventRecurrence;
+import org.mnode.jot4j.dynamodb.query.MatchQuery;
 
 import java.util.List;
 
 /**
  * Update an existing event or event recurrence.
  *
- * NOTE: To enable event replacement specify the CLOBBER {@link DynamoDBMapperConfig.SaveBehavior} in the mapper config.
+ * NOTE: To enable event replacement specify the PUT {@link DynamoDBMapperConfig.SaveBehavior} in the mapper config.
  */
-public class UpdateEvent extends AbstractCommand<VEvent> implements GetQuery {
+public class UpdateEvent extends AbstractCommand<VEvent> implements MatchQuery {
 
-    public UpdateEvent(AmazonDynamoDB dynamoDB) {
-        super(dynamoDB);
-    }
-
-    public UpdateEvent(AmazonDynamoDB dynamoDB, DynamoDBMapperConfig mapperConfig) {
-        super(dynamoDB, mapperConfig);
+    public UpdateEvent(DynamoDBMapper mapper) {
+        super(mapper);
     }
 
     @Override
     public void execute(VEvent input) {
-        DynamoDBMapper mapper = new DynamoDBMapper(dynamoDB, mapperConfig);
-
         Uid uid = input.getProperty(Property.UID);
         RecurrenceId recurrenceId = input.getProperty(Property.RECURRENCE_ID);
         List<? extends Event> result;
@@ -45,6 +40,10 @@ public class UpdateEvent extends AbstractCommand<VEvent> implements GetQuery {
             throw new IllegalArgumentException("Event doesn't exist");
         }
         result.get(0).setData(input);
+        Categories categories = input.getProperty(Property.CATEGORIES);
+        if (categories != null) {
+//            result.get(0).setCategories(new HashSet<String>(categories.getCategories()));
+        }
 
         mapper.save(result.get(0));
     }

@@ -8,6 +8,8 @@ import com.amazonaws.services.dynamodbv2.local.main.ServerRunner
 import com.amazonaws.services.dynamodbv2.local.server.DynamoDBProxyServer
 import com.amazonaws.services.dynamodbv2.model.CreateTableRequest
 import com.amazonaws.services.dynamodbv2.model.DeleteTableRequest
+import com.amazonaws.services.dynamodbv2.model.Projection
+import com.amazonaws.services.dynamodbv2.model.ProjectionType
 import net.fortuna.ical4j.model.Calendar
 import net.fortuna.ical4j.model.ContentBuilder
 import net.fortuna.ical4j.model.component.VEvent
@@ -27,6 +29,9 @@ class AbstractIntegrationTest extends Specification {
     AmazonDynamoDB dynamoDB
 
     @Shared
+    DynamoDBMapper mapper
+
+    @Shared
     Calendar calendar1, calendar2
 
     @Shared
@@ -40,6 +45,10 @@ class AbstractIntegrationTest extends Specification {
         dynamoDB = AmazonDynamoDBClientBuilder.standard()
                 .withEndpointConfiguration(new AwsClientBuilder.EndpointConfiguration('http://localhost:8000/', 'local'))
                 .build()
+
+//        mapper = [dynamoDB, new DynamoDBMapperConfig.Builder()
+//                .withConsistentReads(DynamoDBMapperConfig.ConsistentReads.CONSISTENT).build()]
+        mapper = [dynamoDB]
 
         ContentBuilder builder = []
         event1 = builder.vevent() {
@@ -68,10 +77,14 @@ class AbstractIntegrationTest extends Specification {
     }
 
     def setup() {
+        Projection projection = new Projection().withProjectionType(ProjectionType.ALL)
+
         CreateTableRequest createTableRequest = new CreateTableRequestBuilder().dynamoDb(dynamoDB).typeClass(CardOrg).build()
+        createTableRequest.getGlobalSecondaryIndexes().forEach(index -> index.withProjection(projection))
         dynamoDB.createTable(createTableRequest)
 
         CreateTableRequest createCalTableRequest = new CreateTableRequestBuilder().dynamoDb(dynamoDB).typeClass(Event).build()
+        createCalTableRequest.getGlobalSecondaryIndexes().forEach(index -> index.withProjection(projection))
         dynamoDB.createTable(createCalTableRequest)
     }
 
