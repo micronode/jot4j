@@ -12,7 +12,7 @@ import java.nio.ByteBuffer;
 @AllArgsConstructor
 @Builder
 @Data
-public class Attachment extends AbstractCalMapper {
+public class Attachment extends AbstractMapper {
 
     private final String pkPrefix;
 

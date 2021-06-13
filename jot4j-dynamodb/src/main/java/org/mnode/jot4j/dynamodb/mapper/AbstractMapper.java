@@ -1,11 +1,20 @@
 package org.mnode.jot4j.dynamodb.mapper;
 
+import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBAttribute;
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBIndexHashKey;
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBIndexRangeKey;
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBTable;
+import lombok.Data;
 
 @DynamoDBTable(tableName = "jotCal")
-public abstract class AbstractCalMapper {
+@Data
+public abstract class AbstractMapper {
+
+    @DynamoDBAttribute(attributeName = "Owner")
+    private String ownerId;
+
+    @DynamoDBAttribute(attributeName = "Group")
+    private String groupId;
 
     public abstract String getPK();
 

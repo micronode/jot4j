@@ -10,7 +10,7 @@ import lombok.Data;
 @AllArgsConstructor
 @Builder
 @Data
-public class Attendee extends AbstractCalMapper {
+public class Attendee extends AbstractMapper {
 
     private final String pkPrefix;
 
@@ -27,7 +27,7 @@ public class Attendee extends AbstractCalMapper {
     @Override
     @DynamoDBHashKey(attributeName = "PK")
     public String getPK() {
-        return pkPrefix + "#" + uid;
+        return "GROUP#" + getGroupId() + "#" + pkPrefix + "#" + uid;
     }
 
     @Override
