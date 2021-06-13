@@ -14,6 +14,8 @@ public class CreateTableRequestBuilder {
 
     private Class<?> typeClass;
 
+    private String tableName;
+
     public CreateTableRequestBuilder dynamoDb(AmazonDynamoDB dynamoDB) {
         this.dynamoDB = dynamoDB;
         return this;
@@ -24,10 +26,15 @@ public class CreateTableRequestBuilder {
         return this;
     }
 
+    public CreateTableRequestBuilder tableName(String tableName) {
+        this.tableName = tableName;
+        return this;
+    }
+
     public CreateTableRequest build() {
         DynamoDBMapper mapper = new DynamoDBMapper(dynamoDB);
 
-        CreateTableRequest request = mapper.generateCreateTableRequest(typeClass);
+        CreateTableRequest request = mapper.generateCreateTableRequest(typeClass).withTableName(tableName);
         request.setProvisionedThroughput(new ProvisionedThroughput(5L, 5L));
         request.getGlobalSecondaryIndexes().forEach(gsi -> {
             gsi.setProvisionedThroughput(new ProvisionedThroughput(5L, 5L));
