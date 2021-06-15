@@ -6,7 +6,7 @@ import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBIndexRangeKey;
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBTable;
 import lombok.Data;
 
-@DynamoDBTable(tableName = "jotCal")
+@DynamoDBTable(tableName = "JOT")
 @Data
 public abstract class AbstractMapper {
 

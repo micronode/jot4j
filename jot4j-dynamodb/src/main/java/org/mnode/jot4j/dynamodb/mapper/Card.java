@@ -1,14 +1,14 @@
 package org.mnode.jot4j.dynamodb.mapper;
 
 import com.amazonaws.services.dynamodbv2.datamodeling.*;
-import lombok.*;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
 import net.fortuna.ical4j.vcard.VCard;
 
 import java.util.Set;
 
 @EqualsAndHashCode(callSuper = true)
-@AllArgsConstructor
-@Builder
 @Data
 @NoArgsConstructor
 public class Card extends AbstractMapper {

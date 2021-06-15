@@ -1,17 +1,15 @@
 package org.mnode.jot4j.dynamodb.mapper;
 
 import com.amazonaws.services.dynamodbv2.datamodeling.*;
-import lombok.*;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
 import net.fortuna.ical4j.model.component.VAvailability;
 
 import java.util.Date;
 import java.util.Set;
 
 @EqualsAndHashCode(callSuper = true)
-@AllArgsConstructor
-@Builder
 @Data
-@NoArgsConstructor
 public class Availability extends AbstractMapper {
 
     @DynamoDBAttribute(attributeName = "Uid")

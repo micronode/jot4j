@@ -1,11 +1,11 @@
 package org.mnode.jot4j.dynamodb.mapper;
 
 import com.amazonaws.services.dynamodbv2.datamodeling.*;
-import lombok.*;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
 
 @EqualsAndHashCode(callSuper = true)
-@AllArgsConstructor
-@Builder
 @Data
 @NoArgsConstructor
 public class Calendar extends AbstractMapper {

@@ -3,14 +3,12 @@ package org.mnode.jot4j.dynamodb.mapper;
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBAttribute;
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBHashKey;
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBRangeKey;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 import java.nio.ByteBuffer;
 
-@AllArgsConstructor
-@Builder
+@EqualsAndHashCode(callSuper = true)
 @Data
 public class Attachment extends AbstractMapper {
 

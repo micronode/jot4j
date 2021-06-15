@@ -1,16 +1,14 @@
 package org.mnode.jot4j.dynamodb.mapper;
 
 import com.amazonaws.services.dynamodbv2.datamodeling.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import net.fortuna.ical4j.vcard.VCard;
 
 import java.util.Set;
 
-@AllArgsConstructor
-@Builder
+@EqualsAndHashCode(callSuper = true)
 @Data
 @NoArgsConstructor
 public class Group extends AbstractMapper {

@@ -2,11 +2,11 @@ package org.mnode.jot4j.dynamodb.mapper;
 
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBAttribute;
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBRangeKey;
-import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
-@AllArgsConstructor
+@EqualsAndHashCode(callSuper = true)
 @Data
 @NoArgsConstructor
 public class ToDoRecurrence extends ToDo {

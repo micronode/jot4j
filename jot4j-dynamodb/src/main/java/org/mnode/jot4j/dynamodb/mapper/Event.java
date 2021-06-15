@@ -1,15 +1,15 @@
 package org.mnode.jot4j.dynamodb.mapper;
 
 import com.amazonaws.services.dynamodbv2.datamodeling.*;
-import lombok.*;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
 import net.fortuna.ical4j.model.component.VEvent;
 
 import java.util.Date;
 import java.util.Set;
 
 @EqualsAndHashCode(callSuper = true)
-@AllArgsConstructor
-@Builder
 @Data
 @NoArgsConstructor
 public class Event extends AbstractMapper {

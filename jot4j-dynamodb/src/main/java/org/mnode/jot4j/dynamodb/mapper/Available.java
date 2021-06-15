@@ -1,13 +1,13 @@
 package org.mnode.jot4j.dynamodb.mapper;
 
 import com.amazonaws.services.dynamodbv2.datamodeling.*;
-import lombok.*;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
 
 import java.util.Date;
 
-@EqualsAndHashCode
-@AllArgsConstructor
-@Builder
+@EqualsAndHashCode(callSuper = true)
 @Data
 @NoArgsConstructor
 public class Available extends AbstractMapper {
