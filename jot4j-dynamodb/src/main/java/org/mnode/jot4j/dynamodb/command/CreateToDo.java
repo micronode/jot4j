@@ -12,8 +12,8 @@ import java.util.List;
 
 public class CreateToDo extends AbstractCommand<VToDo> implements CreateCommand {
 
-    public CreateToDo(DynamoDBMapper mapper) {
-        super(mapper);
+    public CreateToDo(DynamoDBMapper mapper, String ownerId, String groupId) {
+        super(mapper, ownerId, groupId);
     }
 
     @Override

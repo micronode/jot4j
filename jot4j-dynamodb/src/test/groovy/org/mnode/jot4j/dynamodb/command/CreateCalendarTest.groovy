@@ -15,11 +15,11 @@ class CreateCalendarTest extends AbstractIntegrationTest {
         }
 
         when: 'a create command is executed'
-        CreateCalendar createCalendar = [mapper]
+        CreateCalendar createCalendar = [mapper, '1000', '1000']
         createCalendar.execute(calendar)
 
         then: 'the item count matches expected'
-        dynamoDB.describeTable("jotCal").getTable().getItemCount() == 1
+        assertTableItemCount(1)
     }
 
     def 'create calendar with an event'() {
@@ -37,20 +37,20 @@ class CreateCalendarTest extends AbstractIntegrationTest {
         }
 
         when: 'a create command is executed'
-        CreateCalendar createCalendar = [mapper]
+        CreateCalendar createCalendar = [mapper, '1000', '1000']
         createCalendar.execute(calendar)
 
         then: 'the item count matches expected'
-        dynamoDB.describeTable("jotCal").getTable().getItemCount() == 2
+        assertTableItemCount(2)
     }
 
     def 'create a calendar'() {
         given: 'a create calendar is executed'
-        CreateCalendar createCalendar = [mapper]
+        CreateCalendar createCalendar = [mapper, '1000', '1000']
         createCalendar.execute(calendar)
 
         expect: 'the item count matches expected'
-        dynamoDB.describeTable("jotCal").getTable().getItemCount() == expectedItemCount
+        assertTableItemCount(expectedItemCount)
 
         where:
         calendar    | expectedItemCount

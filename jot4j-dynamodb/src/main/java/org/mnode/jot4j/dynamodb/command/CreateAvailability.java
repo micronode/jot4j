@@ -9,19 +9,19 @@ import java.util.List;
 
 public class CreateAvailability extends AbstractCommand<VAvailability> implements CreateCommand {
 
-    public CreateAvailability(DynamoDBMapper mapper) {
-        super(mapper);
+    public CreateAvailability(DynamoDBMapper mapper, String ownerId, String groupId) {
+        super(mapper, ownerId, groupId);
     }
 
     @Override
     public void execute(VAvailability input) {
         List<Object> model = new ArrayList<>();
 
-        Availability availability = createAvailability(input);
+        Availability availability = createAvailability(input, ownerId, groupId);
         model.add(availability);
 
         input.getAvailable().forEach(available -> {
-
+            model.add(createAvailable(available, ownerId, groupId));
         });
 
         mapper.batchSave(model.toArray());

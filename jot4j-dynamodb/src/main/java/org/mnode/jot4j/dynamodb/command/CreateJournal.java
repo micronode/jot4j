@@ -12,8 +12,8 @@ import java.util.List;
 
 public class CreateJournal extends AbstractCommand<VJournal> implements CreateCommand {
 
-    public CreateJournal(DynamoDBMapper mapper) {
-        super(mapper);
+    public CreateJournal(DynamoDBMapper mapper, String ownerId, String groupId) {
+        super(mapper, ownerId, groupId);
     }
 
     @Override

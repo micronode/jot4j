@@ -17,16 +17,16 @@ import java.util.List;
  */
 public class CreateCalendar extends AbstractCommand<Calendar> implements CreateCommand {
 
-    public CreateCalendar(DynamoDBMapper mapper) {
-        super(mapper);
+    public CreateCalendar(DynamoDBMapper mapper, String ownerId, String groupId) {
+        super(mapper, ownerId, groupId);
     }
 
     @Override
     public void execute(Calendar input) {
         List<Object> model = new ArrayList<>();
-        model.add(createCalendar(input));
+        model.add(createCalendar(input, ownerId, groupId));
         input.getComponents(Component.VEVENT).forEach(event -> {
-                model.add(createEvent((VEvent) event, input));
+                model.add(createEvent((VEvent) event, ownerId, groupId, input));
             }
         );
 
@@ -41,9 +41,9 @@ public class CreateCalendar extends AbstractCommand<Calendar> implements CreateC
 
         List<Object> model = new ArrayList<>();
         Arrays.stream(input).forEach(calendar -> {
-            model.add(createCalendar(calendar));
+            model.add(createCalendar(calendar, ownerId, groupId));
             calendar.getComponents(Component.VEVENT).forEach(event -> {
-                    model.add(createEvent((VEvent) event, calendar));
+                    model.add(createEvent((VEvent) event, ownerId, groupId, calendar));
                 }
             );
         });

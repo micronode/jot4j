@@ -11,8 +11,18 @@ public abstract class AbstractCommand<T> {
 
     protected final DynamoDBMapper mapper;
 
-    public AbstractCommand(DynamoDBMapper mapper) {
+    protected final String ownerId;
+
+    protected final String groupId;
+
+    public AbstractCommand(DynamoDBMapper mapper, String ownerId) {
+        this(mapper, ownerId, null);
+    }
+
+    public AbstractCommand(DynamoDBMapper mapper, String ownerId, String groupId) {
         this.mapper = mapper;
+        this.ownerId = ownerId;
+        this.groupId = groupId;
     }
 
     public abstract void execute(T input);

@@ -20,8 +20,8 @@ import java.util.stream.Collectors;
  */
 public class CreateEvent extends AbstractCommand<VEvent> implements CreateCommand {
 
-    public CreateEvent(DynamoDBMapper mapper) {
-        super(mapper);
+    public CreateEvent(DynamoDBMapper mapper, String ownerId, String groupId) {
+        super(mapper, ownerId, groupId);
     }
 
     @Override
@@ -32,7 +32,7 @@ public class CreateEvent extends AbstractCommand<VEvent> implements CreateComman
             EventRecurrence eventRecurrence = createEventRecurrence(input);
             model.add(eventRecurrence);
         } else {
-            Event event = createEvent(input);
+            Event event = createEvent(input, ownerId, groupId);
             model.add(event);
         }
 
@@ -60,7 +60,7 @@ public class CreateEvent extends AbstractCommand<VEvent> implements CreateComman
                 EventRecurrence eventRecurrence = createEventRecurrence(event);
                 model.add(eventRecurrence);
             } else {
-                Event event1 = createEvent(event);
+                Event event1 = createEvent(event, ownerId, groupId);
                 model.add(event1);
             }
 

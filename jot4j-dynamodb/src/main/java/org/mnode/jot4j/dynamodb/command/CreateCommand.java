@@ -4,24 +4,35 @@ import net.fortuna.ical4j.model.Calendar;
 import net.fortuna.ical4j.model.Component;
 import net.fortuna.ical4j.model.Property;
 import net.fortuna.ical4j.model.component.*;
+import org.mnode.jot4j.dynamodb.mapper.Available;
 import org.mnode.jot4j.dynamodb.mapper.*;
+
+import java.util.Optional;
 
 public interface CreateCommand {
 
-    default org.mnode.jot4j.dynamodb.mapper.Calendar createCalendar(Calendar calendar) {
+    default org.mnode.jot4j.dynamodb.mapper.Calendar createCalendar(Calendar calendar, String ownerId, String groupId) {
         org.mnode.jot4j.dynamodb.mapper.Calendar calendar1 = new org.mnode.jot4j.dynamodb.mapper.Calendar();
-        calendar1.setUid(calendar.getProperty(Property.UID).getValue());
+        calendar1.setOwnerId(ownerId);
+        calendar1.setGroupId(groupId);
+        Optional.<Property>ofNullable(calendar.getProperty(Property.UID)).ifPresent(uid -> {
+            calendar1.setUid(uid.getValue());
+        });
         calendar1.setData(calendar);
         return calendar1;
     }
 
-    default Event createEvent(VEvent vEvent) {
-        return createEvent(vEvent, null);
+    default Event createEvent(VEvent vEvent, String ownerId, String groupId) {
+        return createEvent(vEvent, ownerId, groupId, null);
     }
 
-    default Event createEvent(VEvent vEvent, Calendar calendar) {
+    default Event createEvent(VEvent vEvent, String ownerId, String groupId, Calendar calendar) {
         Event event = new Event();
-        event.setUid(vEvent.getProperty(Property.UID).getValue());
+        event.setOwnerId(ownerId);
+        event.setGroupId(groupId);
+        Optional.<Property>ofNullable(vEvent.getProperty(Property.UID)).ifPresent(uid -> {
+            event.setUid(uid.getValue());
+        });
         event.setData(vEvent);
         if (calendar != null) {
             event.setCalendarUid(calendar.getProperty(Property.UID).getValue());
@@ -29,11 +40,26 @@ public interface CreateCommand {
         return event;
     }
 
-    default Availability createAvailability(VAvailability vAvailability) {
+    default Availability createAvailability(VAvailability vAvailability, String ownerId, String groupId) {
         Availability availability = new Availability();
-        availability.setUid(vAvailability.getProperty(Property.UID).getValue());
+        availability.setOwnerId(ownerId);
+        availability.setGroupId(groupId);
+        Optional.<Property>ofNullable(vAvailability.getProperty(Property.UID)).ifPresent(uid -> {
+            availability.setUid(uid.getValue());
+        });
         availability.setData(vAvailability);
         return availability;
+    }
+
+    default Available createAvailable(net.fortuna.ical4j.model.component.Available data, String ownerId, String groupId) {
+        Available available = new Available();
+        available.setOwnerId(ownerId);
+        available.setGroupId(groupId);
+        Optional.<Property>ofNullable(data.getProperty(Property.UID)).ifPresent(uid -> {
+            available.setUid(uid.getValue());
+        });
+        available.setData(data);
+        return available;
     }
 
     default EventRecurrence createEventRecurrence(VEvent vEvent) {
@@ -46,7 +72,9 @@ public interface CreateCommand {
 
     default Journal createJournal(VJournal vJournal) {
         Journal journal = new Journal();
-        journal.setUid(vJournal.getProperty(Property.UID).getValue());
+        Optional.<Property>ofNullable(vJournal.getProperty(Property.UID)).ifPresent(uid -> {
+            journal.setUid(uid.getValue());
+        });
         journal.setData(vJournal);
         return journal;
     }
@@ -61,7 +89,9 @@ public interface CreateCommand {
 
     default ToDo createToDo(VToDo vToDo) {
         ToDo toDo = new ToDo();
-        toDo.setUid(vToDo.getProperty(Property.UID).getValue());
+        Optional.<Property>ofNullable(vToDo.getProperty(Property.UID)).ifPresent(uid -> {
+            toDo.setUid(uid.getValue());
+        });
         toDo.setData(vToDo);
         return toDo;
     }
@@ -76,7 +106,9 @@ public interface CreateCommand {
 
     default Alarm createAlarm(VAlarm vAlarm, Component component) {
         Alarm alarm = new Alarm();
-        alarm.setUid(vAlarm.getProperty(Property.UID).getValue());
+        Optional.<Property>ofNullable(vAlarm.getProperty(Property.UID)).ifPresent(uid -> {
+            alarm.setUid(uid.getValue());
+        });
         alarm.setData(vAlarm);
         if (component != null) {
             alarm.setComponentUid(component.getProperty(Property.UID).getValue());
