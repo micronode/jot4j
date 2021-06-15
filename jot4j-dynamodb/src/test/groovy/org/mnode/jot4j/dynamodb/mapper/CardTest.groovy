@@ -15,7 +15,7 @@ class CardTest extends AbstractIntegrationTest {
         mapper.save(card)
         
         then: 'the item count matches expected'
-        dynamoDB.describeTable("jotCard").getTable().getItemCount() == 1
+        assertTableItemCount(1)
 
         and: 'retrieved item matches expected'
         def list = mapper.query(Card, new DynamoDBQueryExpression<Card>()
