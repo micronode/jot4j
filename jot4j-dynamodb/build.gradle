@@ -8,10 +8,14 @@ repositories {
     maven {
         url = 'https://s3-us-west-2.amazonaws.com/dynamodb-local/release'
     }
+    maven {
+        url 'https://oss.sonatype.org/content/repositories/snapshots/'
+    }
 }
 
 dependencies {
     api project(':jot-core'),
+            "org.mnode.ical4j:ical4j:$ical4jVersion",
             "org.mnode.ical4j:ical4j-json:$ical4jJsonVersion"
 
     implementation platform('com.amazonaws:aws-java-sdk-bom:1.11.878')
